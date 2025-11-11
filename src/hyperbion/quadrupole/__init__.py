@@ -14,7 +14,7 @@ Based on the Blueprint by Sebastian Klemm.
 from .tripolar_cell import TripolarGabrielCell, TripolarLogicState
 from .quadrupole_network import QuadrupoleNetwork
 from .phase_system import GlobalPhase, QuadrantSelector
-from .mirror_state import HolisticMirrorState
+from .mirror_state import HolisticMirrorState, ClusterSignature
 from .communication import CommunicationLayer, SignatureOperators
 
 __all__ = [
@@ -24,6 +24,7 @@ __all__ = [
     "GlobalPhase",
     "QuadrantSelector",
     "HolisticMirrorState",
+    "ClusterSignature",
     "CommunicationLayer",
     "SignatureOperators",
 ]

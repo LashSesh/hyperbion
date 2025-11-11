@@ -311,8 +311,8 @@ class TripolarGabrielCell:
                 # Inconsistent - weaken
                 delta = -learning_rate * 0.5
 
-            # Weight decay
-            delta -= 0.01 * weight
+            # Weight decay (smaller than learning rate)
+            delta -= learning_rate * 0.1 * weight
 
             # Apply
             new_weight = weight + delta
