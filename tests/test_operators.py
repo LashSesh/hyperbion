@@ -70,16 +70,21 @@ class TestWormholeOperator:
         """Test WT operator creating shortcuts."""
         network = HyperbionNetwork()
 
-        # Create distant cells
+        # Create distant cells with connection between them
         c0 = network.add_cell()
         c1 = network.add_cell()
+        c2 = network.add_cell()
 
-        # Apply WT (manual distance)
-        wt = WormholeOperator(distance_threshold=0)  # Allow any distance for test
-        result = wt.apply(network, [c0, c1])
+        # Create a path c0 -> c1 -> c2 (distance = 2)
+        network.connect_cells(c0, c1, 1.0)
+        network.connect_cells(c1, c2, 1.0)
+
+        # Apply WT to create shortcut from c0 to c2
+        wt = WormholeOperator(distance_threshold=2)
+        result = wt.apply(network, [c0, c2])
 
         assert result.success is True
-        assert c1 in network.cells[c0].wormhole_connections
+        assert c2 in network.cells[c0].wormhole_connections
 
 
 class TestNullpunktOperator:
@@ -149,13 +154,14 @@ class TestMorphogenesisOperator:
         """Test MOR cell fusion."""
         network = HyperbionNetwork()
 
-        c0 = network.add_cell()
-        c1 = network.add_cell()
+        # Create enough cells to exceed min_network_size (default 10)
+        cells = [network.add_cell() for _ in range(12)]
+        c0, c1 = cells[0], cells[1]
 
         initial_size = len(network.cells)
 
-        # Apply MOR
-        mor = MorphogenesisOperator()
+        # Apply MOR with reduced min_network_size for test
+        mor = MorphogenesisOperator(min_network_size=5)
         result = mor.apply(network, [c0, c1], mode='fuse')
 
         assert result.success is True
