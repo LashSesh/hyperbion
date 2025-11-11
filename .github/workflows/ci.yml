@@ -38,6 +38,10 @@ jobs:
         pip install -r requirements.txt
         pip install pytest pytest-cov
 
+    - name: Install package
+      run: |
+        pip install -e .
+
     - name: Run tests
       run: |
         pytest tests/ -v --cov=hyperbion --cov-report=xml --cov-report=term
@@ -68,6 +72,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: Install package
+      run: |
+        pip install -e .
 
     - name: Run benchmark suite
       run: |
@@ -171,6 +179,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install sphinx sphinx-rtd-theme
+
+    - name: Install package
+      run: |
+        pip install -e .
 
     - name: Build documentation
       run: |
