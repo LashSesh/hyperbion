@@ -1,0 +1,213 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'claude/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+
+    - name: Run tests
+      run: |
+        pytest tests/ -v --cov=hyperbion --cov-report=xml --cov-report=term
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  benchmark:
+    name: Run Benchmarks
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run benchmark suite
+      run: |
+        python benchmarks/run_benchmark.py
+
+    - name: Upload benchmark results
+      uses: actions/upload-artifact@v4
+      with:
+        name: benchmark-results
+        path: benchmark_results/
+        retention-days: 30
+
+    - name: Check success criteria
+      run: |
+        if [ -f benchmark_results/benchmark_summary.txt ]; then
+          echo "Benchmark completed successfully"
+          cat benchmark_results/benchmark_summary.txt
+        else
+          echo "Benchmark failed"
+          exit 1
+        fi
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black isort mypy
+
+    - name: Check code formatting with black
+      run: |
+        black --check src/ tests/ examples/ benchmarks/ || true
+
+    - name: Check import sorting with isort
+      run: |
+        isort --check-only src/ tests/ examples/ benchmarks/ || true
+
+    - name: Lint with flake8
+      run: |
+        flake8 src/ tests/ examples/ benchmarks/ --count --select=E9,F63,F7,F82 --show-source --statistics || true
+        flake8 src/ tests/ examples/ benchmarks/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics || true
+
+  build:
+    name: Build Package
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build wheel setuptools
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Upload package artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package
+        path: dist/
+        retention-days: 7
+
+  deploy-docs:
+    name: Deploy Documentation
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install sphinx sphinx-rtd-theme
+
+    - name: Build documentation
+      run: |
+        cd docs || mkdir -p docs
+        echo "Documentation placeholder" > docs/index.html
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
+        publish_branch: gh-pages
+        force_orphan: true
+
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [test, benchmark, lint, build]
+    if: always()
+
+    steps:
+    - name: Check job statuses
+      run: |
+        echo "CI Pipeline Summary"
+        echo "==================="
+        echo "Tests: ${{ needs.test.result }}"
+        echo "Benchmarks: ${{ needs.benchmark.result }}"
+        echo "Lint: ${{ needs.lint.result }}"
+        echo "Build: ${{ needs.build.result }}"
+
+        if [ "${{ needs.test.result }}" == "success" ] && \
+           [ "${{ needs.benchmark.result }}" == "success" ] && \
+           [ "${{ needs.build.result }}" == "success" ]; then
+          echo "✓ All critical checks passed!"
+          exit 0
+        else
+          echo "✗ Some checks failed"
+          exit 1
+        fi

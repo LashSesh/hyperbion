@@ -221,9 +221,6 @@ See the `examples/` directory for complete examples:
 
 - `basic_simulation.py`: Simple network simulation
 - `operator_showcase.py`: Demonstrating all operators
-- `morphogenesis_demo.py`: Cell division and fusion
-- `cluster_evolution.py`: Cluster detection and evolution
-- `benchmark.py`: Performance benchmarks
 
 ### Running Examples
 
@@ -231,6 +228,39 @@ See the `examples/` directory for complete examples:
 python examples/basic_simulation.py
 python examples/operator_showcase.py
 ```
+
+## 📈 Benchmarking
+
+### Comprehensive Benchmark Suite
+
+The project includes a complete benchmark system comparing Hyperbion Tripolar Network with classical binary networks:
+
+```bash
+# Run full benchmark suite
+python benchmarks/run_benchmark.py
+```
+
+### Benchmark Tasks
+
+1. **Pattern Classification**: Multi-class pattern recognition with noise
+2. **Memory Capacity**: Storage and recall of distinct patterns
+3. **Association Learning**: Input-output mapping tasks
+
+### Success Criteria
+
+- ✅ **Information Advantage ≥ 58.5%** (theoretical: log₂(3)/log₂(2) - 1)
+- ✅ **System Advantage ≥ 2x** (accounting for operators and efficiency)
+- ✅ **Reproducibility**: Deterministic results with full history
+
+### Benchmark Output
+
+Results are generated in `benchmark_results/`:
+- `benchmark_summary.txt` - Text summary
+- `benchmark_results.json` - Complete data
+- `benchmark_comparison.csv` - Tabular comparison
+- `benchmark_report.tex` - LaTeX report (compile with pdflatex)
+
+See [BENCHMARKS.md](BENCHMARKS.md) for detailed documentation.
 
 ## 🧪 Testing
 
