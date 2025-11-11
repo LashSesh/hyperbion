@@ -176,12 +176,13 @@ class MorphogenesisOperator(Operator):
             parent_cell = network.cells[parent_id]
 
             # Create daughter cell
-            daughter_id = network.get_next_cell_id()
-            daughter_cell = network.add_cell(
+            daughter_id = network.add_cell(
                 state=parent_cell.state,
                 bias=parent_cell.bias * 0.5,
                 plasticity_params=parent_cell.params
             )
+            # Retrieve the actual cell object from network
+            daughter_cell = network.cells[daughter_id]
 
             # Split connections
             for target_id, weight in list(parent_cell.connections.items()):
