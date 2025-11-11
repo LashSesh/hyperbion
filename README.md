@@ -5,6 +5,18 @@
 
 A self-organizing, structurally plastic neural network based on tripolar logic, Gabriel cells, and autonomous operators. Implementation of the **Delta-Blueprint-1.0** specification by Sebastian Klemm.
 
+## 🆕 **NEW: Quadrupole Architecture**
+
+The system has evolved into a **Quadrupole Tripolar Neural Network** with:
+- **4 Resonant Clusters** in quadrupole arrangement (Q₀, Q₁, Q₂, Q₃)
+- **Rotating Phase Space** Θ(t) determining active cluster
+- **Holistic Mirror State** H(t) as third oscillating mode (LD)
+- **Quantum-Hybrid Communication** between clusters
+
+See **[QUADRUPOLE_ARCHITECTURE.md](QUADRUPOLE_ARCHITECTURE.md)** for complete documentation.
+
+---
+
 ## 🌟 Overview
 
 The Hyperbion Tripolar Network is a novel neural network architecture featuring:
