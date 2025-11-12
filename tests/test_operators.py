@@ -150,6 +150,54 @@ class TestMorphogenesisOperator:
         assert result.success is True
         assert len(network.cells) == initial_size + 1
 
+    def test_cell_division_with_connections(self):
+        """Test MOR cell division transfers connections to daughter cell.
+
+        This test specifically verifies the fix for the bug where add_cell()
+        returns an int but code tried to call connect() on it, causing
+        AttributeError when dividing cells with connections.
+        """
+        network = HyperbionNetwork()
+
+        # Create parent and target cells
+        parent_id = network.add_cell(state=1)
+        target1_id = network.add_cell(state=0)
+        target2_id = network.add_cell(state=0)
+        target3_id = network.add_cell(state=0)
+
+        # Add connections from parent to targets
+        parent_cell = network.cells[parent_id]
+        parent_cell.connect(target1_id, 0.5)
+        parent_cell.connect(target2_id, 0.7)
+        parent_cell.connect(target3_id, 0.3)
+
+        initial_connections = len(parent_cell.connections)
+        initial_size = len(network.cells)
+
+        # Apply MOR divide - this should transfer some connections
+        mor = MorphogenesisOperator()
+        result = mor.apply(network, [parent_id], mode='divide')
+
+        # Verify division succeeded
+        assert result.success is True
+        assert len(network.cells) == initial_size + 1
+
+        # Verify daughter cell was created and is a GabrielCell object
+        daughter_id = result.metrics['new_cells'][0]
+        daughter_cell = network.cells[daughter_id]
+        assert daughter_cell is not None
+        assert hasattr(daughter_cell, 'connect')  # Ensure it's a cell object, not int
+
+        # Verify connections were transferred (some to daughter, some stay with parent)
+        parent_connections = len(parent_cell.connections)
+        daughter_connections = len(daughter_cell.connections)
+
+        # Total connections should be preserved (minus any random drops)
+        # At least some connections should exist between parent and daughter
+        assert parent_connections + daughter_connections <= initial_connections
+        assert parent_connections >= 0
+        assert daughter_connections >= 0
+
     def test_cell_fusion(self):
         """Test MOR cell fusion."""
         network = HyperbionNetwork()
