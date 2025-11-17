@@ -2,8 +2,27 @@
 
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](tests/)
+[![Code Coverage](https://img.shields.io/badge/coverage-high-brightgreen.svg)](tests/)
 
-A self-organizing, structurally plastic neural network based on tripolar logic, Gabriel cells, and autonomous operators. Implementation of the **Delta-Blueprint-1.0** specification by Sebastian Klemm.
+> **A post-symbolic, self-organizing neural network architecture based on tripolar logic, structural plasticity, and autonomous operators.**
+
+Implementation of the **Delta-Blueprint-1.0** specification by Sebastian Klemm.
+
+## Table of Contents
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Quadrupole Architecture](#-quadrupole-architecture)
+- [Installation](#-installation)
+- [Quick Start](#-quick-start)
+- [Documentation](#-documentation)
+- [Examples](#-examples)
+- [API Reference](#-api-reference)
+- [Benchmarks](#-benchmarks)
+- [Testing](#-testing)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ## 🆕 **NEW: Quadrupole Architecture**
 
@@ -227,18 +246,32 @@ curl -X POST http://localhost:8000/network/export \
   --output network.graphml
 ```
 
+## 📚 Documentation
+
+Comprehensive documentation is available:
+
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture and design patterns
+- **[API_GUIDE.md](docs/API_GUIDE.md)** - Complete API reference and usage
+- **[DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Developer guide and best practices
+- **[PRODUCTION_ROADMAP.md](PRODUCTION_ROADMAP.md)** - Production readiness roadmap
+- **[QUADRUPOLE_ARCHITECTURE.md](QUADRUPOLE_ARCHITECTURE.md)** - Quadrupole system details
+- **[BENCHMARKS.md](BENCHMARKS.md)** - Benchmark system documentation
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+
 ## 📊 Examples
 
 See the `examples/` directory for complete examples:
 
 - `basic_simulation.py`: Simple network simulation
 - `operator_showcase.py`: Demonstrating all operators
+- `quadrupole_demo.py`: Quadrupole architecture demonstration
 
 ### Running Examples
 
 ```bash
 python examples/basic_simulation.py
 python examples/operator_showcase.py
+python examples/quadrupole_demo.py
 ```
 
 ## 📈 Benchmarking
@@ -361,34 +394,78 @@ See `examples/benchmark.py` for detailed benchmarks.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please:
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
+Quick checklist:
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Add tests for new features
-4. Ensure all tests pass
-5. Submit a pull request
+4. Ensure all tests pass (`pytest`)
+5. Follow code style guidelines (`black`, `flake8`)
+6. Commit your changes with clear messages
+7. Push and submit a pull request
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
+MIT License - see [LICENSE](LICENSE) file for details.
 
-## 👤 Author
+## 👥 Authors & Contributors
 
-Sebastian Klemm - Delta-Blueprint-1.0 Specification
+**Blueprint Specification**: Sebastian Klemm (Delta-Blueprint-1.0)
 
-## 🔗 References
+**Implementation**: Hyperbion Development Team
 
-- [Blueprint Specification](docs/blueprint.md)
-- [API Documentation](docs/api.md)
-- [Mathematical Foundations](docs/mathematics.md)
+See [CONTRIBUTORS.md](CONTRIBUTORS.md) for a list of all contributors.
 
-## 📞 Support
+## 🔗 References & Resources
 
-For issues and questions:
-- GitHub Issues: https://github.com/yourusername/tripolar-index/issues
-- Email: support@example.com
+### Documentation
+- [Architecture Guide](docs/ARCHITECTURE.md)
+- [API Reference](docs/API_GUIDE.md)
+- [Developer Guide](docs/DEVELOPMENT.md)
+
+### Scientific Background
+- Delta-Blueprint-1.0 Specification
+- Tripolar Logic Theory
+- Information Theory & Shannon Entropy
+- Self-Organizing Systems
+
+### Related Projects
+- Gabriel Cell Theory
+- Structural Plasticity in Neural Networks
+- Autonomous Operator Systems
+
+## 📞 Support & Community
+
+### Getting Help
+- **Documentation**: Check the [docs/](docs/) directory
+- **GitHub Issues**: [Report bugs or request features](https://github.com/LashSesh/tripolar-index/issues)
+- **Discussions**: [Join community discussions](https://github.com/LashSesh/tripolar-index/discussions)
+
+### Reporting Issues
+Please include:
+- Python version and OS
+- Minimal reproducible example
+- Expected vs actual behavior
+- Relevant logs or error messages
+
+## 🎯 Project Status
+
+- **Current Version**: 1.0.0
+- **Status**: Production Ready ✅
+- **Test Coverage**: High
+- **CI/CD**: Automated via GitHub Actions
+- **Last Updated**: 2025-11-17
+
+## 🚀 Future Roadmap
+
+See [PRODUCTION_ROADMAP.md](PRODUCTION_ROADMAP.md) for detailed plans including:
+- Performance optimization
+- Scalability improvements
+- Advanced features
+- Production deployment guides
+- Enterprise support
 
 ---
 
-**Note**: This is a research implementation of the Hyperbion Tripolar Network concept. It is designed for experimentation, simulation, and educational purposes.
+**Note**: This is a research-grade implementation of the Hyperbion Tripolar Network concept, designed for experimentation, simulation, educational purposes, and production deployment with appropriate testing and validation.
