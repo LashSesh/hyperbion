@@ -5,9 +5,7 @@
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](tests/)
 [![Code Coverage](https://img.shields.io/badge/coverage-high-brightgreen.svg)](tests/)
 
-> **A post-symbolic, self-organizing neural network architecture based on tripolar logic, structural plasticity, and autonomous operators.**
-
-Implementation of the **Delta-Blueprint-1.0** specification by Sebastian Klemm.
+**A post-symbolic, self-organizing neural network architecture based on tripolar logic, structural plasticity, and autonomous operators.**
 
 ## Table of Contents
 
